@@ -9,6 +9,11 @@ set_margins(col) = sprintf('set lmargin at screen %f;', get_lmargin(col)) . \
   sprintf('set rmargin at screen %f;', get_rmargin(col));
 get_lmargin(col) = (left_margin + (col - 1) * (gap_size + ((right_margin - left_margin)-(col_count - 1) * gap_size)/col_count))
 get_rmargin(col) = (left_margin + (col - 1) * gap_size + col * ((right_margin - left_margin)-(col_count - 1) * gap_size)/col_count)
+# 198 lpz c E neurons in this simulation
+rgb(r,g,b) = (65536 * int(r) + 256 * int(g) + int(b))
+# needs to be 24bit packed rgb triple so gotta convert
+# refer to pallet file for hex to get rgb values
+mycol(x) = (x<199?rgb(59,76,192):rgb(104,138,239))
 
 # Variables
 # Simulation
@@ -30,7 +35,7 @@ set linestyle 1 lc rgb 'black' lw 0.25 pt 7 ps 0.4
 
 set label 1 "LPZ C" at graph -0.15, 0.0 rotate front
 set label 2 "P LPZ" at graph -0.15, 0.6 rotate front
-set arrow nohead from graph -0.15, graph 0.4 to graph 0.0, graph 0.4 ls 1 lw 2
+set arrow nohead from graph -0.15, graph 0.33 to screen 1.0, graph 0.33 ls 1 lw 2
 
 unset xlabel
 unset ylabel
@@ -57,7 +62,7 @@ do for [i=1:(num_images-0)] {
     inputfile = "raster-lpz_c_E-p_lpz_E-".inputtime.".txt"
     if (file_exists(inputfile)) {
         eval(set_margins(i))
-        plot inputfile using 3:2 with points ls 1 title ""
+        plot inputfile using 3:2:(mycol($2)) with points lc rgb variable title ""
         unset label
         unset arrow
     }
