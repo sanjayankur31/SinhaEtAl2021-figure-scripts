@@ -67,6 +67,11 @@ else {
     exit
 }
 
+set object circle at scr 0.18,0.5 size scr 0.03 front lc rgb(255,255,255)
+set object circle at scr 0.41,0.5 size scr 0.03 front lc rgb(255,255,255)
+set object circle at scr 0.64,0.5 size scr 0.03 front lc rgb(255,255,255)
+set object circle at scr 0.88,0.5 size scr 0.03 front lc rgb(255,255,255)
+
 unset colorbox
 do for [i=2:(num_images-0)] {
     inputtime = value(sprintf('inputtime%d', i))
