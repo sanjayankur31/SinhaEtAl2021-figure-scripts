@@ -39,6 +39,6 @@ simid="201908061027"
 
 ## LPZ C
 set output simid."-81-conductance-rowstacked-histograms-E-to-lpz_c_E.tex"
-plot for [COL=5:2:-1] '081-conductance-incoming-totals-lpz_c_E-EE.txt' every 4 using COL:xtic(sprintf("%.1f", $1/1000)) fill pattern COL-1 title columnheader
+plot for [COL=5:2:-1] '081-conductance-incoming-totals-lpz_c_E-EE.txt' every 1 using COL:xtic(sprintf("%.1f", $1/1000)) fill pattern COL-1 title columnheader
 # plot for [COL=5:2:-1] '75-syn_conns-incoming-totals-lpz_c_E-EE.txt' every 1 using COL:xtic(sprintf("%.1f", $1/1000)) fill pattern COL-1 title columnheader
 
