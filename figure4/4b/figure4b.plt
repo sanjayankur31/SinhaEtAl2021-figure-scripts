@@ -1,73 +1,34 @@
-load 'figure4b.pal'
-
-# Helper functions
-# https://stackoverflow.com/a/21087936/375067
-init_margins(left, right, gap, cols) = \
-  sprintf('left_margin = %f; right_margin = %f;', left, right) . \
-  sprintf('col_count = %d; gap_size = %f;', cols, gap)
-set_margins(col) = sprintf('set lmargin at screen %f;', get_lmargin(col)) . \
-  sprintf('set rmargin at screen %f;', get_rmargin(col));
-get_lmargin(col) = (left_margin + (col - 1) * (gap_size + ((right_margin - left_margin)-(col_count - 1) * gap_size)/col_count))
-get_rmargin(col) = (left_margin + (col - 1) * gap_size + col * ((right_margin - left_margin)-(col_count - 1) * gap_size)/col_count)
-# 198 lpz c E neurons in this simulation
-rgb(r,g,b) = (65536 * int(r) + 256 * int(g) + int(b))
-# needs to be 24bit packed rgb triple so gotta convert
-# refer to pallet file for hex to get rgb values
-mycol(x) = (x<199?rgb(59,76,192):rgb(104,138,239))
-
-# Variables
-# Simulation
-simulation = "201908061027"
-# Number of images to put in the row
-num_images = 4
-
-# Usage:
-# gnuplot -e 'inputtime1="2000.0"' -e 'inputtime2="3000.0"' ... plot-multiple-firing-rate-snapshots-in-row-tex.plt
-
-file_exists(fname) = system("[ -f '".fname."' ] && echo '1' || echo '0'") + 0
-set term epslatex color size 5.0, 1.5 font "phv"
-set output simulation."-raster-snapshots.tex"
-# set term pngcairo color size 36cm,9cm
-# set output simulation."-raster-snapshots.png"
-
-# linestyle for points
-set linestyle 1 lc rgb 'black' lw 0.25 pt 7 ps 0.4
-
-set label 1 "LPZ C" at graph -0.15, 0.0 rotate front
-set label 2 "P LPZ" at graph -0.15, 0.6 rotate front
-set arrow nohead from graph -0.15, graph 0.33 to screen 1.0, graph 0.33 ls 1 lw 2
-
-unset xlabel
-unset ylabel
-
-unset xtics
-unset ytics
-
-set bmargin at screen 0.02
+# Usage: gnuplot plot-firing-rates-IE-tex.plt
+load 'figure4c.pal'
+set term epslatex color size 4.7, 1.5 font "phv"
+set xlabel "Time (\\(\\times 1000s\\))"
+set ylabel "CC"
+set border 3
+set ytics border nomirror 1
+set xtics border nomirror 2000 format "%.0s"
+set lmargin at screen 0.01
+set rmargin at screen 1.0
 set tmargin at screen 0.99
-eval(init_margins(0.04, 0.99, 0.007, num_images))
-set multiplot layout 1, num_images
+set yrange[-0.5:0.5]
+set key inside center top horizontal
 
-# unset border
-# unset key
-set yrange[0:]
-
+simulation="201908061027"
 inputtime1="1500.0"
 inputtime2="2001.5"
 inputtime3="4000.0"
 inputtime4="18000.0"
 
-do for [i=1:(num_images-0)] {
-    inputtime = value(sprintf('inputtime%d', i))
-    inputfile = "raster-lpz_c_E-p_lpz_E-".inputtime.".txt"
-    if (file_exists(inputfile)) {
-        eval(set_margins(i))
-        plot inputfile using 3:2:(mycol($2)) with points lc rgb variable title ""
-        unset label
-        unset arrow
-    }
-    else {
-        print inputfile." not found. Exiting"
-        exit
-    }
-}
+
+set arrow nohead from first inputtime1, first -0.5 to first inputtime1, first 0.5 ls 0 lw 2 dt 2
+set arrow nohead from first inputtime2, first -0.5 to first inputtime2, first 0.5 ls 0 lw 2 dt 2
+set arrow nohead from first inputtime3, first -0.5 to first inputtime3, first 0.5 ls 0 lw 2 dt 2
+set arrow nohead from first inputtime4, first -0.5 to first inputtime4, first 0.5 ls 0 lw 2 dt 2
+# Horizontal line marking 0
+set arrow nohead from first 0, first 0 to graph 1, first 0 ls 1 lc black lw 4
+# Horizontal line marking 0.1
+set arrow nohead from first 0, first 0.1 to graph 1, first 0.1 ls 0 lc black lw 1 dt 2
+
+set output simulation."-CC-lpz_c_E-p_lpz_E.tex"
+set title ""
+plot "cc-lpz_c_E.gdf" using 1:3 with linespoints ls 1 pt 7 ps 0.4 title "LPZ C", "cc-p_lpz_E.gdf" using 1:3 with linespoints ls 3 lw 2 pt 7 ps 0.4 title "Peri-LPZ";
+# column 2 is the number of neurons that were used to calculate the mean CC
