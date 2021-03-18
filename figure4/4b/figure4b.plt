@@ -1,5 +1,5 @@
 # Usage: gnuplot plot-firing-rates-IE-tex.plt
-load 'figure4c.pal'
+load 'figure4b.pal'
 set term epslatex color size 4.7, 1.5 font "phv"
 set xlabel "Time (\\(\\times 1000s\\))"
 set ylabel "CC"
