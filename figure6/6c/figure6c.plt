@@ -12,8 +12,10 @@
 
 # load '/home/asinha/Documents/02_Code/00_mine/Sinha2016-scripts/postprocess/gnuplot/firing-rates-palette.pal'
 set term epslatex color size 4.5, 2.5 font "phv"
+set datafile separator ","
 set xlabel "Time (\\(\\times 1000s\\))"
-set ylabel "Conductance" offset 3.5,0
+set ylabel "Weight"
+# set ylabel "Weight" offset 3.5,0
 
 set border 3
 set ytics border nomirror
@@ -23,7 +25,7 @@ set lmargin at screen 0.10
 set rmargin at screen 1.0
 set tmargin at screen 0.99
 
-set format y "%.1t x 10\\textsuperscript\{%T\}"
+# set format y "%.1t x 10\\textsuperscript\{%T\}"
 
 # rowstacked histograms
 set style histogram rowstacked
@@ -39,6 +41,6 @@ simid="201908061027"
 
 ## LPZ C
 set output simid."-81-conductance-rowstacked-histograms-E-to-lpz_c_E.tex"
-plot for [COL=5:2:-1] '081-conductance-incoming-totals-lpz_c_E-EE.txt' every 1 using COL:xtic(sprintf("%.1f", $1/1000)) fill pattern COL-1 title columnheader
+plot for [COL=5:2:-1] '08-syn_conns-to-lpz_c_E-EE.csv' every 1 using COL:xtic(sprintf("%.1f", $1/1000)) fill pattern COL-1 title columnheader
 # plot for [COL=5:2:-1] '75-syn_conns-incoming-totals-lpz_c_E-EE.txt' every 1 using COL:xtic(sprintf("%.1f", $1/1000)) fill pattern COL-1 title columnheader
 
