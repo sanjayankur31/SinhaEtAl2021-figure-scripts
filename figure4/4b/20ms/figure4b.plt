@@ -4,7 +4,7 @@ set term epslatex color size 4.7, 1.5 font "phv"
 set xlabel "Time (\\(\\times 1000s\\))"
 set ylabel "CC"
 set border 3
-set ytics border nomirror 0.5
+set ytics border nomirror 1
 set xtics border nomirror 2000 format "%.0s"
 set lmargin at screen 0.01
 set rmargin at screen 1.0
